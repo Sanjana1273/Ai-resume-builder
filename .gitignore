@@ -1,0 +1,10 @@
+# Frontend
+client/node_modules
+client/build
+client/dist
+
+# Backend
+server/node_modules
+
+# Env
+.env
