@@ -1,7 +1,7 @@
 import React, { useEffect , useState} from 'react'
 import { useParams , Link } from 'react-router-dom'
 import { dummyResumeData } from '../assets/assets'
-import {ArrowLeftIcon , GraduationCap, Briefcase, FileText, FolderIcon, User , Sparkles, ChevronLeft, ChevronRight} from 'lucide-react'
+import {ArrowLeftIcon , GraduationCap, Briefcase, FileText, FolderIcon, User , Sparkles, ChevronLeft, ChevronRight, Share2Icon, EyeIcon, EyeOffIcon, Download, DownloadIcon} from 'lucide-react'
 import PersonalInfo from '../components/PersonalInfo'
 import ResumePreview from '../components/ResumePreview'
 import TemplateSelector from '../components/TemplateSelector'
@@ -9,6 +9,8 @@ import ColorPicker from '../components/ColorPicker'
 import ProfessionalSummaryForm from '../components/ProfessionalSummaryForm'
 import ExperienceForm from '../components/ExperienceForm'
 import EducationForm from '../components/EducationForm'
+import ProjectForm from '../components/ProjectForm'
+import SkillsForm from '../components/SkillsForm'
 
 function ResumeBuilder() {
   const {resumeId} = useParams()
@@ -18,6 +20,7 @@ function ResumeBuilder() {
     personal_info:{},
     professional_summary:"",
     experience : [],
+    education : [],
     project: [],
     skills:[],
     template:"classic",
@@ -115,12 +118,56 @@ function ResumeBuilder() {
                    />
                 )
               }
+                   {
+                activeSection.id === 'projects' && (
+                  <ProjectForm data={resumeData.project}
+                  onChange={(data)=> setResumeData(prev => ({...prev , project:data}))} 
+                   />
+                )
+              }
+                  {
+                activeSection.id === 'skills' && (
+                  <SkillsForm data={resumeData.skills}
+                  onChange={(data)=> setResumeData(prev => ({...prev , skills:data}))} 
+                   />
+                )
+              }
              </div>
+             <button className='bg-linear-to-br from-green-100 to-green-200
+             ring-green-300 text-green-600 ring hover:ring-green-400 
+             transition-all rounded-md px-6 py-2 mt-6 text-sm'>
+              Save Changes
+             </button>
             </div>
             
           </div>
           {/* {Right Panel - Preview} */}
           <div className='lg:col-span-7 max-lg:mt-6'>
+            <div className='relative w-full'>
+               <div className='absolute bottom-3 left-0 rigth-0 flex items-center
+               justify-end gap-2'>
+                {resumeData.public && (
+                   <button  className='flex items-center p-2 px-4 gap-2 text-xs
+                   bg-linear-to-br from-blue-100 to-blue-200 text-blue-600
+                   rounded-lg ring-blue-300 hover:ring transition-colors'>
+                    <Share2Icon className='size-4' />
+                   </button>
+                )}
+                <button className='flex items-center p-2 px-4 gap-2 text-xs
+                bg-linear-to-br from-purple-100 to-purple-200 text-purple-600
+                ring-purple-300 rounded-lg hover:ring transition-colors'>
+                  {resumeData.public ? <EyeIcon className='size-4'/> :
+                  <EyeOffIcon size={4} />}
+                  {resumeData.public ? 'Public' : 'Private'}
+                </button>
+                <button className='flex items-center gap-2 px-6 py-2 texxt-xs
+                bg-linear-to-br from-green-100 to-green-200 text-green-600
+                rounded-lg ring-green-300 hover:ring transition-colors'>
+                  <DownloadIcon className='size-4' />Download
+
+                </button>
+               </div>
+            </div>
             <div>
               {/* {resume preview} */}
               <ResumePreview data={resumeData} template={resumeData.template} accentColor={resumeData.accent_color} />
